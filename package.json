@@ -1,0 +1,27 @@
+{
+  "name": "ansaju-be",
+  "version": "1.0.0",
+  "description": "backend for ansaju app",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start-dev": "nodemon src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ansaju-org/ansaju-be.git"
+  },
+  "author": "ansaju-org",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ansaju-org/ansaju-be/issues"
+  },
+  "homepage": "https://github.com/ansaju-org/ansaju-be#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.8.3"
+  }
+}
