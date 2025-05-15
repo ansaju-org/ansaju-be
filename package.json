@@ -20,12 +20,16 @@
   },
   "homepage": "https://github.com/ansaju-org/ansaju-be#readme",
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/jsonwebtoken": "^9.0.9",
     "nodemon": "^3.1.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
   "dependencies": {
     "@hapi/hapi": "^21.4.0",
+    "bcryptjs": "^3.0.2",
+    "jsonwebtoken": "^9.0.2",
     "zod": "^3.24.4"
   }
 }
