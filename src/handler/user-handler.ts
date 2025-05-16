@@ -1,7 +1,8 @@
 import { Request, ResponseObject, ResponseToolkit } from "@hapi/hapi";
 import { UserService } from "../service/user-service";
-import { UserLoginRequest, UserRegisterRequest } from "../model/user-model";
+import { UserLoginRequest, UserRegisterRequest } from "../dto/user-dto";
 import { injectable } from "tsyringe";
+import { logger } from "../infrastructure/logger";
 
 @injectable()
 export class UserHandler {
@@ -15,6 +16,7 @@ export class UserHandler {
     h: ResponseToolkit
   ): Promise<ResponseObject> {
     const payload = request.payload as UserRegisterRequest;
+    logger.debug(`payload from register: ${JSON.stringify(payload)}`);
 
     const response = await this.userService.register(payload);
 
@@ -30,6 +32,7 @@ export class UserHandler {
     h: ResponseToolkit
   ): Promise<ResponseObject> {
     const payload = request.payload as UserLoginRequest;
+    logger.debug(`payload from login: ${JSON.stringify(payload)}`);
 
     const response = await this.userService.login(payload);
 

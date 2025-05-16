@@ -3,6 +3,7 @@ import { container } from "tsyringe";
 import { UserHandler } from "../handler/user-handler";
 import { createUserRoutes } from "../route/user-routes";
 import { ResponseError } from "../error/response-error";
+import { logger } from "./logger";
 
 export const createHapiServer = async () => {
   const hapiServer = server({
@@ -18,6 +19,7 @@ export const createHapiServer = async () => {
     const { response } = request;
 
     if (response instanceof ResponseError) {
+      logger.error(response.message);
       return h
         .response({
           error: true,

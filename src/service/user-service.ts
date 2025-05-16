@@ -4,7 +4,7 @@ import {
   UserLoginRequest,
   UserRegisterRequest,
   UserResponse,
-} from "../model/user-model";
+} from "../dto/user-dto";
 import { UserRepository } from "../repository/user-repository";
 import {
   userLoginSchema,
@@ -14,6 +14,7 @@ import { Validation } from "../validation/validation";
 import { ResponseError } from "../error/response-error";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
+import { logger } from "../infrastructure/logger";
 
 @injectable()
 export class UserService {
@@ -27,11 +28,13 @@ export class UserService {
 
   async register(req: UserRegisterRequest): Promise<UserResponse> {
     const userRequest = this.validation.validate(userRegisterSchema, req);
+    logger.debug(`userRequest: ${JSON.stringify(userRequest)}`);
 
     const existingUser = await this.userRepository.findByUsername(
       userRequest.username
     );
     if (existingUser) {
+      logger.error(`Username already exists: ${userRequest.username}`);
       throw new ResponseError(400, "Username already exists");
     }
 
@@ -39,6 +42,7 @@ export class UserService {
       userRequest.email
     );
     if (existingUserWithEmail) {
+      logger.error(`Email already exists: ${userRequest.email}`);
       throw new ResponseError(400, "Email already exists");
     }
 
@@ -62,14 +66,17 @@ export class UserService {
 
   async login(req: UserLoginRequest): Promise<UserResponse> {
     const userRequest = this.validation.validate(userLoginSchema, req);
+    logger.debug(`userRequest: ${JSON.stringify(userRequest)}`);
 
     const user = await this.userRepository.findByUsername(userRequest.username);
     if (!user) {
+      logger.error(`User not found: ${userRequest.username}`);
       throw new ResponseError(404, "User not found");
     }
 
     const isPasswordValid = await compare(userRequest.password, user.password);
     if (!isPasswordValid) {
+      logger.error(`Invalid password: ${userRequest.password}`);
       throw new ResponseError(401, "Invalid password");
     }
 
@@ -78,7 +85,9 @@ export class UserService {
     });
 
     return {
-      ...user,
+      email: user.email,
+      name: user.name,
+      username: user.username,
       token,
     };
   }
