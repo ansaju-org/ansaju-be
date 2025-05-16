@@ -21,8 +21,11 @@
   "homepage": "https://github.com/ansaju-org/ansaju-be#readme",
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/jest": "^29.5.14",
     "@types/jsonwebtoken": "^9.0.9",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.9",
+    "ts-jest": "^29.3.3",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
   },
