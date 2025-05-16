@@ -2,6 +2,7 @@ import { server } from "@hapi/hapi";
 import { container } from "tsyringe";
 import { UserHandler } from "../handler/user-handler";
 import { createUserRoutes } from "../route/user-routes";
+import { ResponseError } from "../error/response-error";
 
 export const createHapiServer = async () => {
   const hapiServer = server({
@@ -13,7 +14,22 @@ export const createHapiServer = async () => {
 
   hapiServer.route(createUserRoutes(userHandler));
 
+  hapiServer.ext("onPreResponse", (request, h) => {
+    const { response } = request;
+
+    if (response instanceof ResponseError) {
+      return h
+        .response({
+          error: true,
+          message: response.message,
+        })
+        .code(response.statusCode);
+    }
+
+    return h.continue;
+  });
+
   await hapiServer.initialize();
 
   return hapiServer;
-}
+};
