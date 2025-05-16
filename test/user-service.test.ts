@@ -26,6 +26,9 @@ describe("UserService tests", () => {
       password: "password123",
     };
 
+    mockUserRepository.findByUsername.mockResolvedValue(null);
+    mockUserRepository.findByEmail.mockResolvedValue(null);
+
     const response = await userService.register(request);
 
     const user = mockUserRepository.insert.mock.calls[0][0];
@@ -35,6 +38,10 @@ describe("UserService tests", () => {
     expect(response.username).toBe(request.username);
     expect(user.password).not.toBe(request.password);
     expect(compareSync(request.password, user.password)).toBe(true);
+    expect(mockUserRepository.findByUsername).toHaveBeenCalledWith(
+      request.username
+    );
+    expect(mockUserRepository.findByEmail).toHaveBeenCalledWith(request.email);
   });
 
   it("should be register failed in validation", async () => {
@@ -46,6 +53,37 @@ describe("UserService tests", () => {
     };
 
     expect(userService.register(request)).rejects.toThrow(ResponseError);
+  });
+
+  it("should be register failed username already exists", async () => {
+    const request: UserRegisterRequest = {
+      name: "John Doe",
+      email: "johndoe@mail.com",
+      username: "johndoe",
+      password: "password123",
+    };
+
+    mockUserRepository.findByUsername.mockResolvedValue({ ...request } as User);
+
+    expect(userService.register(request)).rejects.toThrow(
+      "Username already exists"
+    );
+  });
+
+  it("should be register failed email already exists", async () => {
+    const request: UserRegisterRequest = {
+      name: "John Doe",
+      email: "johndoe@mail.com",
+      username: "johndoe",
+      password: "password123",
+    };
+
+    mockUserRepository.findByUsername.mockResolvedValue(null);
+    mockUserRepository.findByEmail.mockResolvedValue({ ...request } as User);
+
+    expect(userService.register(request)).rejects.toThrow(
+      "Email already exists"
+    );
   });
 
   it("should be login success", async () => {

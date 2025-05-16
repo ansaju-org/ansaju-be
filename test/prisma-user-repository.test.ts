@@ -33,4 +33,24 @@ describe("PrismaUserRepository tests", () => {
     const foundUser = await repository.findByUsername("invalidusername");
     expect(foundUser).toBeNull();
   });
+
+  it("should create a user and find it by email", async () => {
+    const user = new User("John Doe", "johndoe", "johndoe@mail.com", "123456");
+    await repository.insert(user);
+
+    const foundUser = await repository.findByEmail("johndoe@mail.com");
+    if (!foundUser) {
+      throw new Error("User not found");
+    }
+
+    expect(foundUser.name).toBe(user.name);
+    expect(foundUser.username).toBe(user.username);
+    expect(foundUser.email).toBe(user.email);
+    expect(foundUser.password).toBe(user.password);
+  });
+
+  it("should not find a user with an invalid email", async () => {
+    const foundUser = await repository.findByEmail("invalid@email.com");
+    expect(foundUser).toBeNull();
+  });
 });

@@ -23,6 +23,20 @@ export class UserService {
   async register(req: UserRegisterRequest): Promise<UserResponse> {
     const userRequest = this.validation.validate(userRegisterSchema, req);
 
+    const existingUser = await this.userRepository.findByUsername(
+      userRequest.username
+    );
+    if (existingUser) {
+      throw new ResponseError(400, "Username already exists");
+    }
+
+    const existingUserWithEmail = await this.userRepository.findByEmail(
+      userRequest.email
+    );
+    if (existingUserWithEmail) {
+      throw new ResponseError(400, "Email already exists");
+    }
+
     const user = new User(
       userRequest.name,
       userRequest.username,
