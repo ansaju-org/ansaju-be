@@ -35,7 +35,10 @@
     "@hapi/hapi": "^21.4.0",
     "@prisma/client": "^6.8.1",
     "bcryptjs": "^3.0.2",
+    "hapi-routing-wrapper": "^1.0.1",
     "jsonwebtoken": "^9.0.2",
+    "reflect-metadata": "^0.2.2",
+    "tsyringe": "^4.10.0",
     "zod": "^3.24.4"
   }
 }
