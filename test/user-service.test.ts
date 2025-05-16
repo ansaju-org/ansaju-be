@@ -86,7 +86,7 @@ describe("UserService tests", () => {
       password: "password123",
     };
 
-    mockUserRepository.findByUsername.mockResolvedValue(undefined);
+    mockUserRepository.findByUsername.mockResolvedValue(null);
 
     expect(userService.login(request)).rejects.toThrow("User not found");
   });
