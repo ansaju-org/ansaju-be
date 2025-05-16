@@ -20,7 +20,10 @@ export class UserService {
   constructor(
     @inject("UserRepository") private userRepository: UserRepository,
     private validation: Validation
-  ) {}
+  ) {
+    this.login = this.login.bind(this);
+    this.register = this.register.bind(this);
+  }
 
   async register(req: UserRegisterRequest): Promise<UserResponse> {
     const userRequest = this.validation.validate(userRegisterSchema, req);

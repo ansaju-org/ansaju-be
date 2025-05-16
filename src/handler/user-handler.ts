@@ -5,7 +5,10 @@ import { injectable } from "tsyringe";
 
 @injectable()
 export class UserHandler {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService) {
+    this.postLogin = this.postLogin.bind(this);
+    this.postRegister = this.postRegister.bind(this);
+  }
 
   async postRegister(
     request: Request,
