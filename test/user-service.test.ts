@@ -1,11 +1,11 @@
 import { Validation } from "../src/validation/validation";
 import { UserRepository } from "../src/repository/user-repository";
 import { UserService } from "../src/service/user-service";
-import { UserLoginRequest, UserRegisterRequest } from "../src/model/user-model";
+import { UserLoginRequest, UserRegisterRequest } from "../src/dto/user-dto";
 import { mock, MockProxy } from "jest-mock-extended";
 import { compareSync, hashSync } from "bcryptjs";
 import { ResponseError } from "../src/error/response-error";
-import { User } from "../src/entity/user";
+import { UserEntity } from "../src/entity/user-entity";
 
 describe("UserService tests", () => {
   let validation: Validation;
@@ -63,7 +63,7 @@ describe("UserService tests", () => {
       password: "password123",
     };
 
-    mockUserRepository.findByUsername.mockResolvedValue({ ...request } as User);
+    mockUserRepository.findByUsername.mockResolvedValue({ ...request } as UserEntity);
 
     expect(userService.register(request)).rejects.toThrow(
       "Username already exists"
@@ -79,7 +79,7 @@ describe("UserService tests", () => {
     };
 
     mockUserRepository.findByUsername.mockResolvedValue(null);
-    mockUserRepository.findByEmail.mockResolvedValue({ ...request } as User);
+    mockUserRepository.findByEmail.mockResolvedValue({ ...request } as UserEntity);
 
     expect(userService.register(request)).rejects.toThrow(
       "Email already exists"
@@ -92,7 +92,7 @@ describe("UserService tests", () => {
       password: "password123",
     };
 
-    const user: User = {
+    const user: UserEntity = {
       name: "John Doe",
       email: "johndoe@mail.com",
       username: "johndoe",
@@ -135,7 +135,7 @@ describe("UserService tests", () => {
       password: "password salah",
     };
 
-    const user: User = {
+    const user: UserEntity = {
       name: "John Doe",
       email: "johndoe@mail.com",
       username: "johndoe",

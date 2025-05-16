@@ -1,4 +1,4 @@
-import { User } from "../src/entity/user";
+import { UserEntity } from "../src/entity/user-entity";
 import { prisma } from "../src/infrastructure/database";
 import { PrismaUserRepository } from "../src/repository/prisma-user-repository";
 import { UserRepository } from "../src/repository/user-repository";
@@ -15,7 +15,7 @@ describe("PrismaUserRepository tests", () => {
   });
 
   it("should create a user and find it by username", async () => {
-    const user = new User("John Doe", "johndoe", "johndoe@mail.com", "123456");
+    const user = new UserEntity("John Doe", "johndoe", "johndoe@mail.com", "123456");
     await repository.insert(user);
 
     const foundUser = await repository.findByUsername("johndoe");
@@ -23,6 +23,7 @@ describe("PrismaUserRepository tests", () => {
       throw new Error("User not found");
     }
 
+    expect(foundUser).toBeInstanceOf(UserEntity);
     expect(foundUser.name).toBe(user.name);
     expect(foundUser.username).toBe(user.username);
     expect(foundUser.email).toBe(user.email);
@@ -35,7 +36,7 @@ describe("PrismaUserRepository tests", () => {
   });
 
   it("should create a user and find it by email", async () => {
-    const user = new User("John Doe", "johndoe", "johndoe@mail.com", "123456");
+    const user = new UserEntity("John Doe", "johndoe", "johndoe@mail.com", "123456");
     await repository.insert(user);
 
     const foundUser = await repository.findByEmail("johndoe@mail.com");
@@ -43,6 +44,7 @@ describe("PrismaUserRepository tests", () => {
       throw new Error("User not found");
     }
 
+    expect(foundUser).toBeInstanceOf(UserEntity);
     expect(foundUser.name).toBe(user.name);
     expect(foundUser.username).toBe(user.username);
     expect(foundUser.email).toBe(user.email);

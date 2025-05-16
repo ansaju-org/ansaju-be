@@ -1,5 +1,5 @@
 import { compare, genSalt, hash } from "bcryptjs";
-import { User } from "../entity/user";
+import { UserEntity } from "../entity/user-entity";
 import {
   UserLoginRequest,
   UserRegisterRequest,
@@ -46,7 +46,7 @@ export class UserService {
       throw new ResponseError(400, "Email already exists");
     }
 
-    const user = new User(
+    const user = new UserEntity(
       userRequest.name,
       userRequest.username,
       userRequest.email,

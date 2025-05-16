@@ -1,4 +1,4 @@
-export class User {
+export class UserEntity {
   constructor(
     public name: string,
     public username: string,
