@@ -1,6 +1,8 @@
 import { z } from "zod";
 import { ResponseError } from "../error/response-error";
+import { injectable } from "tsyringe";
 
+@injectable()
 export class Validation {
   validate<T extends z.ZodTypeAny>(schema: T, data: unknown) {
     const result = schema.safeParse(data);

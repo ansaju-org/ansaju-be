@@ -13,10 +13,12 @@ import {
 import { Validation } from "../validation/validation";
 import { ResponseError } from "../error/response-error";
 import { sign } from "jsonwebtoken";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 export class UserService {
   constructor(
-    private userRepository: UserRepository,
+    @inject("UserRepository") private userRepository: UserRepository,
     private validation: Validation
   ) {}
 
