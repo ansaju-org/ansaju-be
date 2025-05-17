@@ -4,11 +4,12 @@ import { UserHandler } from "../handler/user-handler";
 import { createUserRoutes } from "../route/user-routes";
 import { ResponseError } from "../error/response-error";
 import { logger } from "./logger";
+import { Config } from "./config";
 
 export const createHapiServer = async () => {
   const hapiServer = server({
-    port: 9000,
-    host: "localhost",
+    port: Config.get("APP_PORT"),
+    host: Config.get("APP_HOST"),
   });
 
   const userHandler = container.resolve(UserHandler);
