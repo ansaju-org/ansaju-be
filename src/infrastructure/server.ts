@@ -26,9 +26,17 @@ export const createHapiServer = async () => {
           message: response.message,
         })
         .code(response.statusCode);
+    } else if (response instanceof Error) {
+      logger.error(response.message);
+      return h
+        .response({
+          error: true,
+          message: "Internal server error",
+        })
+        .code(500);
+    } else {
+      return h.continue;
     }
-
-    return h.continue;
   });
 
   await hapiServer.initialize();

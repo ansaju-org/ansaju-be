@@ -126,7 +126,7 @@ describe("UserService tests", () => {
 
     mockUserRepository.findByUsername.mockResolvedValue(null);
 
-    expect(userService.login(request)).rejects.toThrow("User not found");
+    expect(userService.login(request)).rejects.toThrow("Invalid username or password");
   });
 
   it("should be login failed password invalid", async () => {
@@ -144,6 +144,6 @@ describe("UserService tests", () => {
 
     mockUserRepository.findByUsername.mockResolvedValue(user);
 
-    expect(userService.login(request)).rejects.toThrow("Invalid password");
+    expect(userService.login(request)).rejects.toThrow("Invalid username or password");
   });
 });

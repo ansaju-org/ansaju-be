@@ -71,13 +71,13 @@ export class UserService {
     const user = await this.userRepository.findByUsername(userRequest.username);
     if (!user) {
       logger.error(`User not found: ${userRequest.username}`);
-      throw new ResponseError(404, "User not found");
+      throw new ResponseError(401, "Invalid username or password");
     }
 
     const isPasswordValid = await compare(userRequest.password, user.password);
     if (!isPasswordValid) {
       logger.error(`Invalid password: ${userRequest.password}`);
-      throw new ResponseError(401, "Invalid password");
+      throw new ResponseError(401, "Invalid username or password");
     }
 
     const token = sign({ username: user.username }, "secret", {

@@ -169,12 +169,12 @@ describe("POST /login", () => {
       },
     });
 
-    expect(response.statusCode).toBe(404);
+    expect(response.statusCode).toBe(401);
 
     const responseData = JSON.parse(response.payload);
 
     expect(responseData.error).toBe(true);
-    expect(responseData.message).toBe("User not found");
+    expect(responseData.message).toBe("Invalid username or password");
     expect(responseData.data).toBeUndefined();
   });
 
@@ -195,7 +195,7 @@ describe("POST /login", () => {
     const responseData = JSON.parse(response.payload);
 
     expect(responseData.error).toBe(true);
-    expect(responseData.message).toBe("Invalid password");
+    expect(responseData.message).toBe("Invalid username or password");
     expect(responseData.data).toBeUndefined();
   });
 
