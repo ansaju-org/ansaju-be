@@ -15,6 +15,7 @@ import { ResponseError } from "../error/response-error";
 import { sign } from "jsonwebtoken";
 import { inject, injectable } from "tsyringe";
 import { logger } from "../infrastructure/logger";
+import { Config } from "../infrastructure/config";
 
 @injectable()
 export class UserService {
@@ -80,7 +81,7 @@ export class UserService {
       throw new ResponseError(401, "Invalid username or password");
     }
 
-    const token = sign({ username: user.username }, "secret", {
+    const token = sign({ username: user.username }, Config.get("APP_JWT_SECRET"), {
       expiresIn: "1years",
     });
 
