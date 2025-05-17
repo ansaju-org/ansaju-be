@@ -1,2 +1,0 @@
-* [Home](/)
-* [User](#user-api)
