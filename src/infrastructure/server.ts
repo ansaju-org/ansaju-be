@@ -10,6 +10,11 @@ export const createHapiServer = async () => {
   const hapiServer = server({
     port: Config.get("APP_PORT"),
     host: Config.get("APP_HOST"),
+    routes: {
+      cors: {
+        origin: ["*"],
+      },
+    },
   });
 
   const userHandler = container.resolve(UserHandler);
