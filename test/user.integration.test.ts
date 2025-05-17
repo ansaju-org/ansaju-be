@@ -16,7 +16,7 @@ const createUser = async () => {
   });
 };
 
-describe("POST /api/register", () => {
+describe("POST /register", () => {
   let server: Server;
 
   beforeAll(async () => {
@@ -34,7 +34,7 @@ describe("POST /api/register", () => {
   it("should register a new user", async () => {
     const response = await server.inject({
       method: "POST",
-      url: "/api/register",
+      url: "/register",
       payload: {
         email: "test@gmail.com",
         name: "John Doe",
@@ -60,7 +60,7 @@ describe("POST /api/register", () => {
 
     const response = await server.inject({
       method: "POST",
-      url: "/api/register",
+      url: "/register",
       payload: {
         email: user.email,
         name: user.name,
@@ -83,7 +83,7 @@ describe("POST /api/register", () => {
 
     const response = await server.inject({
       method: "POST",
-      url: "/api/register",
+      url: "/register",
       payload: {
         email: user.email,
         name: "John Doe 2",
@@ -104,7 +104,7 @@ describe("POST /api/register", () => {
   it("should return error because payload is empty", async () => {
     const response = await server.inject({
       method: "POST",
-      url: "/api/register",
+      url: "/register",
       payload: {},
     });
 
@@ -118,7 +118,7 @@ describe("POST /api/register", () => {
   });
 });
 
-describe("POST /api/login", () => {
+describe("POST /login", () => {
   let server: Server;
 
   beforeAll(async () => {
@@ -138,7 +138,7 @@ describe("POST /api/login", () => {
 
     const response = await server.inject({
       method: "POST",
-      url: "/api/login",
+      url: "/login",
       payload: {
         username: user.username,
         password: "testpassword",
@@ -162,7 +162,7 @@ describe("POST /api/login", () => {
   it("should return error because user not found", async () => {
     const response = await server.inject({
       method: "POST",
-      url: "/api/login",
+      url: "/login",
       payload: {
         username: "invalidusername",
         password: "invalidpassword",
@@ -183,7 +183,7 @@ describe("POST /api/login", () => {
 
     const response = await server.inject({
       method: "POST",
-      url: "/api/login",
+      url: "/login",
       payload: {
         username: user.username,
         password: "invalidpassword",
@@ -202,7 +202,7 @@ describe("POST /api/login", () => {
   it("should return error because payload is empty", async () => {
     const response = await server.inject({
       method: "POST",
-      url: "/api/login",
+      url: "/login",
       payload: {},
     });
 
