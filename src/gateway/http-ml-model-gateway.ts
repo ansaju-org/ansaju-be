@@ -11,7 +11,9 @@ import { Config } from "../infrastructure/config";
 @injectable()
 export class HttpMlModelGateway implements MlModelGateway {
   async predict(data: RecommendationRequest): Promise<RecommendationResponse> {
-    const response = await fetch("http://localhost:5000/predict", {
+    const url = Config.get("APP_MODEL_API_URL");
+
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
