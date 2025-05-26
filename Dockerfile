@@ -23,12 +23,13 @@ WORKDIR /usr/src/app
 
 COPY --from=builder /usr/src/app/prisma ./prisma
 
+COPY --from=builder /usr/src/app/.env ./.env
+
 COPY --from=builder /usr/src/app/dist ./dist
 
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 
 EXPOSE 9000
 
-RUN npx prisma migrate deploy
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
 
-CMD [ "node", "dist/index.js" ]
