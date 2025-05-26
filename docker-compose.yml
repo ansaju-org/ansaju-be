@@ -1,3 +1,4 @@
+version: "3.8"
 services:
   app:
     build:
@@ -12,7 +13,9 @@ services:
     networks:
       - ansaju_network
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+
 
   db:
     image: postgres:16-alpine
@@ -27,6 +30,12 @@ services:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - ansaju_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB} -h localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
 volumes:
   postgres_data:
