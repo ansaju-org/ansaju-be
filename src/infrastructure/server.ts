@@ -5,6 +5,9 @@ import { createUserRoutes } from "../route/user-routes";
 import { ResponseError } from "../error/response-error";
 import { logger } from "./logger";
 import { Config } from "./config";
+import { createRecommendationRoutes } from "../route/recommendation-routes";
+import { RecommendationHandler } from "../handler/recommendation-handler";
+import { verify } from "jsonwebtoken";
 
 export const createHapiServer = async () => {
   const hapiServer = server({
@@ -18,8 +21,32 @@ export const createHapiServer = async () => {
   });
 
   const userHandler = container.resolve(UserHandler);
+  const recommendationHandler = container.resolve(RecommendationHandler);
 
   hapiServer.route(createUserRoutes(userHandler));
+  hapiServer.route(createRecommendationRoutes(recommendationHandler));
+
+  hapiServer.ext("onRequest", (request, h) => {
+    const publicRoutes = ["/login", "/register"];
+    if (publicRoutes.includes(request.path)) {
+      return h.continue;
+    }
+
+    const authHeader = request.headers.authorization;
+
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      throw new ResponseError(401, "Unauthorized");
+    }
+
+    const token = authHeader.replace("Bearer ", "");
+
+    try {
+      const _ = verify(token, Config.get("APP_JWT_SECRET"));
+      return h.continue;
+    } catch (error) {
+      throw new ResponseError(401, "Unauthorized");
+    }
+  });
 
   hapiServer.ext("onPreResponse", (request, h) => {
     const { response } = request;
