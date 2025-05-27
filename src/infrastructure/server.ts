@@ -15,13 +15,14 @@ export const createHapiServer = async () => {
     host: Config.get("APP_HOST"),
     routes: {
       cors: {
-        origin: ["*"],
+        origin: ["http://localhost:5173"],
         additionalHeaders: [
           "cache-control",
           "x-requested-with",
           "authorization",
           "content-type",
         ],
+        additionalExposedHeaders: ["authorization"],
         credentials: true,
       },
     },
