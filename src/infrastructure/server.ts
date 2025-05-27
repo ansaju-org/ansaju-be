@@ -16,6 +16,13 @@ export const createHapiServer = async () => {
     routes: {
       cors: {
         origin: ["*"],
+        additionalHeaders: [
+          "cache-control",
+          "x-requested-with",
+          "authorization",
+          "content-type",
+        ],
+        credentials: true,
       },
     },
   });
