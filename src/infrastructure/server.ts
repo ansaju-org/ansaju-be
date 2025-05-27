@@ -35,6 +35,11 @@ export const createHapiServer = async () => {
   hapiServer.route(createRecommendationRoutes(recommendationHandler));
 
   hapiServer.ext("onRequest", (request, h) => {
+    // Bypass preflight request
+    if (request.method === "options") {
+      return h.continue;
+    }
+    
     const publicRoutes = ["/login", "/register"];
     if (publicRoutes.includes(request.path)) {
       return h.continue;
