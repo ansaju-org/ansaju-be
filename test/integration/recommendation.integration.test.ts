@@ -2,15 +2,24 @@ import { Server } from "@hapi/hapi";
 import { createHapiServer } from "../../src/infrastructure/server";
 import "reflect-metadata";
 import "../../src/infrastructure/container";
-
-const jwtToken =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpYXQiOjE3NDgxNzAwNTEsImV4cCI6MTc3OTcyNzY1MX0.I4h17e2CWAfUTf3BXP59fcdHmdzM2180qNmaGuXXao4";
+import { prisma } from "../../src/infrastructure/database";
+import { createUser } from "./user.integration.test";
+import { sign } from "jsonwebtoken";
+import { Config } from "../../src/infrastructure/config";
 
 describe("POST /recommendation", () => {
   let server: Server;
+  let jwtToken: string;
 
   beforeAll(async () => {
     server = await createHapiServer();
+    jwtToken = await createToken();
+  });
+
+  afterAll(async () => {
+    await prisma.recommendation.deleteMany();
+    await prisma.user.deleteMany();
+    await server.stop();
   });
 
   it("should get recommendation success", async () => {
@@ -107,3 +116,8 @@ describe("POST /recommendation", () => {
     expect(responseData.message).toContain("Invalid request payload");
   });
 });
+
+const createToken = async () => {
+  const user = await createUser();
+  return sign({ username: user.username }, Config.get("APP_JWT_SECRET"));
+};

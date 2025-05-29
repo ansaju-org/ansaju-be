@@ -39,7 +39,7 @@ export const createHapiServer = async () => {
     if (request.method === "options") {
       return h.continue;
     }
-    
+
     const publicRoutes = ["/login", "/register"];
     if (publicRoutes.includes(request.path)) {
       return h.continue;
@@ -54,7 +54,10 @@ export const createHapiServer = async () => {
     const token = authHeader.replace("Bearer ", "");
 
     try {
-      const _ = verify(token, Config.get("APP_JWT_SECRET"));
+      const decoded = verify(token, Config.get("APP_JWT_SECRET")) as any;
+      request.app.user = {
+        ...decoded,
+      };
       return h.continue;
     } catch (error) {
       throw new ResponseError(401, "Unauthorized");
@@ -89,3 +92,13 @@ export const createHapiServer = async () => {
 
   return hapiServer;
 };
+
+declare module "@hapi/hapi" {
+  interface RequestApplicationState {
+    user?: {
+      username: string;
+      // tambahkan properti hasil decode JWT kamu
+      [key: string]: any;
+    };
+  }
+}

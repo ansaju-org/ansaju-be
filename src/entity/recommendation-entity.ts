@@ -1,7 +1,5 @@
 export class RecommendationEntity {
-  constructor(
-    public id: number,
-    public result: string,
-    public createdAt: Date
-  ) {}
+  readonly id?: number;
+  readonly createdAt?: Date;
+  constructor(public result: string, public userUsername: string) {}
 }

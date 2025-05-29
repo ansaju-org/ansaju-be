@@ -1,4 +1,7 @@
-import { HisotryRecommendationRequest } from "../dto/recommendation-dto";
+import {
+  HisotryRecommendationRequest,
+  RecommendationResponse,
+} from "../dto/recommendation-dto";
 import { RecommendationEntity } from "../entity/recommendation-entity";
 import { prisma } from "../infrastructure/database";
 import { RecommendationRepository } from "./recommendation-repository";
@@ -18,11 +21,21 @@ export class PrismaRecommendationRepository
     });
 
     return recommendations.map((recommendation) => {
-      return new RecommendationEntity(
-        recommendation.id,
-        recommendation.result,
-        recommendation.createdAt
-      );
+      return {
+        id: recommendation.id,
+        result: recommendation.result,
+        userUsername: recommendation.userUsername,
+        createdAt: recommendation.createdAt,
+      } as RecommendationEntity;
+    });
+  }
+
+  async insert(recommendation: RecommendationEntity): Promise<void> {
+    await prisma.recommendation.create({
+      data: {
+        result: recommendation.result,
+        userUsername: recommendation.userUsername,
+      },
     });
   }
 }

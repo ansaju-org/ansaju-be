@@ -10,7 +10,7 @@ import { Config } from "../infrastructure/config";
 
 @injectable()
 export class HttpMlModelGateway implements MlModelGateway {
-  async predict(data: RecommendationRequest): Promise<RecommendationResponse> {
+  async predict(data: Pick<RecommendationRequest, "answer">): Promise<RecommendationResponse> {
     const url = Config.get("APP_MODEL_API_URL");
 
     const response = await fetch(url, {

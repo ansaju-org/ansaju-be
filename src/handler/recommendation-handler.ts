@@ -13,8 +13,13 @@ export class RecommendationHandler {
   async postRecommendation(req: Request, h: ResponseToolkit) {
     const request = req.payload as RecommendationRequest;
     logger.debug(`payload from recommendation: ${JSON.stringify(request)}`);
+    logger.debug(`user: ${req.app.user?.username}`);
 
-    const response = await this.recommendationService.getRecommendation(request);
+    request.username = req.app.user!.username;
+    
+    const response = await this.recommendationService.getRecommendation(
+      request
+    );
 
     return h.response({
       error: false,
@@ -23,4 +28,3 @@ export class RecommendationHandler {
     });
   }
 }
-
