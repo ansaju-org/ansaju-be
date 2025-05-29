@@ -15,7 +15,15 @@ export const createHapiServer = async () => {
     host: Config.get("APP_HOST"),
     routes: {
       cors: {
-        origin: ["*"],
+        origin: ["http://localhost:5173"],
+        additionalHeaders: [
+          "cache-control",
+          "x-requested-with",
+          "authorization",
+          "content-type",
+        ],
+        additionalExposedHeaders: ["authorization"],
+        credentials: true,
       },
     },
   });
@@ -27,6 +35,11 @@ export const createHapiServer = async () => {
   hapiServer.route(createRecommendationRoutes(recommendationHandler));
 
   hapiServer.ext("onRequest", (request, h) => {
+    // Bypass preflight request
+    if (request.method === "options") {
+      return h.continue;
+    }
+
     const publicRoutes = ["/login", "/register"];
     if (publicRoutes.includes(request.path)) {
       return h.continue;
@@ -41,7 +54,10 @@ export const createHapiServer = async () => {
     const token = authHeader.replace("Bearer ", "");
 
     try {
-      const _ = verify(token, Config.get("APP_JWT_SECRET"));
+      const decoded = verify(token, Config.get("APP_JWT_SECRET")) as any;
+      request.app.user = {
+        ...decoded,
+      };
       return h.continue;
     } catch (error) {
       throw new ResponseError(401, "Unauthorized");
@@ -76,3 +92,13 @@ export const createHapiServer = async () => {
 
   return hapiServer;
 };
+
+declare module "@hapi/hapi" {
+  interface RequestApplicationState {
+    user?: {
+      username: string;
+      // tambahkan properti hasil decode JWT kamu
+      [key: string]: any;
+    };
+  }
+}

@@ -1,11 +1,11 @@
 import { Server } from "@hapi/hapi";
-import { createHapiServer } from "../src/infrastructure/server";
+import { createHapiServer } from "../../src/infrastructure/server";
 import "reflect-metadata";
-import "../src/infrastructure/container";
-import { prisma } from "../src/infrastructure/database";
+import "../../src/infrastructure/container";
+import { prisma } from "../../src/infrastructure/database";
 import { hashSync } from "bcryptjs";
 
-const createUser = async () => {
+export const createUser = async () => {
   return await prisma.user.create({
     data: {
       email: "test@gmail.com",
@@ -24,10 +24,13 @@ describe("POST /register", () => {
   });
 
   beforeEach(async () => {
+    await prisma.recommendation.deleteMany();
     await prisma.user.deleteMany();
   });
 
   afterAll(async () => {
+    await prisma.recommendation.deleteMany();
+    await prisma.user.deleteMany();
     await server.stop();
   });
 
