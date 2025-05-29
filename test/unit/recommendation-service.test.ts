@@ -1,9 +1,9 @@
-import { Validation } from "../src/validation/validation";
-import { RecommendationService } from "../src/service/recommendation-service";
+import { Validation } from "../../src/validation/validation";
+import { RecommendationService } from "../../src/service/recommendation-service";
 import { mock, MockProxy } from "jest-mock-extended";
-import { MlModelGateway } from "../src/gateway/ml-model-gateway";
-import { RecommendationRequest } from "../src/dto/recommendation-dto";
-import { ResponseError } from "../src/error/response-error";
+import { MlModelGateway } from "../../src/gateway/ml-model-gateway";
+import { RecommendationRequest } from "../../src/dto/recommendation-dto";
+import { ResponseError } from "../../src/error/response-error";
 
 describe("RecommendationService tests", () => {
   let validation: Validation;

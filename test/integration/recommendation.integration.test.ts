@@ -1,7 +1,7 @@
 import { Server } from "@hapi/hapi";
-import { createHapiServer } from "../src/infrastructure/server";
+import { createHapiServer } from "../../src/infrastructure/server";
 import "reflect-metadata";
-import "../src/infrastructure/container";
+import "../../src/infrastructure/container";
 
 const jwtToken =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImpvaG5kb2UiLCJpYXQiOjE3NDgxNzAwNTEsImV4cCI6MTc3OTcyNzY1MX0.I4h17e2CWAfUTf3BXP59fcdHmdzM2180qNmaGuXXao4";
@@ -93,7 +93,7 @@ describe("POST /recommendation", () => {
       method: "POST",
       url: "/recommendation",
       payload: {
-        answer:  [1, 2, 3, 4, 5, 2, 3, 4, 5, 5, 2, 6],
+        answer: [1, 2, 3, 4, 5, 2, 3, 4, 5, 5, 2, 6],
       },
       headers: {
         Authorization: `Bearer ${jwtToken}`,

@@ -1,8 +1,8 @@
 import { Server } from "@hapi/hapi";
-import { createHapiServer } from "../src/infrastructure/server";
+import { createHapiServer } from "../../src/infrastructure/server";
 import "reflect-metadata";
-import "../src/infrastructure/container";
-import { prisma } from "../src/infrastructure/database";
+import "../../src/infrastructure/container";
+import { prisma } from "../../src/infrastructure/database";
 import { hashSync } from "bcryptjs";
 
 const createUser = async () => {
