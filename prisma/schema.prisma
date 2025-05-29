@@ -19,5 +19,17 @@ model User {
   name     String
   password String
 
+  recommendation Recommendation[]
+
   @@map("users")
+}
+
+model Recommendation {
+  id           Int      @id @default(autoincrement())
+  result       String
+  createdAt    DateTime @default(now())
+  User         User?    @relation(fields: [userUsername], references: [username])
+  userUsername String?
+
+  @@map("recommendation_history")
 }
