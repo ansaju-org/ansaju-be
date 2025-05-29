@@ -69,6 +69,9 @@ Base Url : `https://ansaju-api.ikhlashmulya.my.id/`
 
 - endpoint `POST /recommendations`
 
+- headers
+    - `Authorization` : `Bearer <token>`
+
 - request body
     - `answer` as `array of int`, array length must be 12 and each value contains an integer 1 - 5
 
