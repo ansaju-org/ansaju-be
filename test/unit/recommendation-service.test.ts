@@ -2,7 +2,10 @@ import { Validation } from "../../src/validation/validation";
 import { RecommendationService } from "../../src/service/recommendation-service";
 import { mock, MockProxy } from "jest-mock-extended";
 import { MlModelGateway } from "../../src/gateway/ml-model-gateway";
-import { RecommendationRequest } from "../../src/dto/recommendation-dto";
+import {
+  HisotryRecommendationRequest,
+  RecommendationRequest,
+} from "../../src/dto/recommendation-dto";
 import { ResponseError } from "../../src/error/response-error";
 import { RecommendationRepository } from "../../src/repository/recommendation-repository";
 
@@ -67,5 +70,51 @@ describe("RecommendationService tests", () => {
     expect(() =>
       recommendationService.getRecommendation(request)
     ).rejects.toThrow(ResponseError);
+  });
+
+  it("should be success get recommendation history", async () => {
+    const request: HisotryRecommendationRequest = {
+      username: "johndoe",
+      page: 1,
+      limit: 5,
+    };
+
+    recommendationRepository.findHistoryByUsername.mockResolvedValue([
+      {
+        id: 1,
+        createdAt: new Date(),
+        result: "Teknik Informatika",
+        userUsername: request.username,
+      },
+      {
+        id: 1,
+        createdAt: new Date(),
+        result: "Sistem Informasi",
+        userUsername: request.username,
+      },
+      {
+        id: 1,
+        createdAt: new Date(),
+        result: "Teknik Komputer",
+        userUsername: request.username,
+      },
+      {
+        id: 1,
+        createdAt: new Date(),
+        result: "Ilmu Komunikasi",
+        userUsername: request.username,
+      },
+      {
+        id: 1,
+        createdAt: new Date(),
+        result: "Ilmu Hukum",
+        userUsername: request.username,
+      },
+    ]);
+
+    const response = await recommendationService.getHistory(request);
+
+    expect(response.length).toBe(5);
+    console.log(response);
   });
 });

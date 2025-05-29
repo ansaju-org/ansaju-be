@@ -11,8 +11,8 @@ describe("PrismaRecommendationRepository tests", () => {
   });
 
   afterEach(async () => {
-    await prisma.user.deleteMany({});
     await prisma.recommendation.deleteMany({});
+    await prisma.user.deleteMany({});
   });
 
   it("should be success get history recommendation", async () => {

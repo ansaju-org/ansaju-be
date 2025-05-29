@@ -4,7 +4,8 @@ import { RecommendationHandler } from "../handler/recommendation-handler";
 export const createRecommendationRoutes = (handler: RecommendationHandler) => {
   const router = createHapiRouter();
 
-  router.post("/recommendation", handler.postRecommendation);
+  router.post("/recommendations", handler.postRecommendation);
+  router.get("/recommendations/history", handler.getRecommendationsHistory);
 
   return router.getRoutes();
 };

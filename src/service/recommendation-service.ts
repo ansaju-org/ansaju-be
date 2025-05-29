@@ -2,10 +2,14 @@ import { inject, injectable } from "tsyringe";
 import { Validation } from "../validation/validation";
 import { MlModelGateway } from "../gateway/ml-model-gateway";
 import {
+  HisotryRecommendationRequest,
   RecommendationRequest,
   RecommendationResponse,
 } from "../dto/recommendation-dto";
-import { recommendationRequestSchema } from "../validation/recommendation-schemas";
+import {
+  historyRecommendationRequestSchema,
+  recommendationRequestSchema,
+} from "../validation/recommendation-schemas";
 import { RecommendationRepository } from "../repository/recommendation-repository";
 import { RecommendationEntity } from "../entity/recommendation-entity";
 
@@ -18,6 +22,7 @@ export class RecommendationService {
     private recommendationRepository: RecommendationRepository
   ) {
     this.getRecommendation = this.getRecommendation.bind(this);
+    this.getHistory = this.getHistory.bind(this);
   }
 
   async getRecommendation(
@@ -37,5 +42,24 @@ export class RecommendationService {
     await this.recommendationRepository.insert(recommendation);
 
     return response;
+  }
+
+  async getHistory(
+    req: HisotryRecommendationRequest
+  ): Promise<RecommendationResponse[]> {
+    const request = this.validation.validate(
+      historyRecommendationRequestSchema,
+      req
+    );
+
+    const result = await this.recommendationRepository.findHistoryByUsername(
+      request
+    );
+
+    return result.map((value) => ({
+      jurusan: value.result,
+      id: value.id,
+      created_at: value.createdAt,
+    }));
   }
 }
