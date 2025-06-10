@@ -15,7 +15,7 @@ export const createHapiServer = async () => {
     host: Config.get("APP_HOST"),
     routes: {
       cors: {
-        origin: ["http://localhost:5173"],
+        origin: ["https://ansaju.netlify.app"],
         additionalHeaders: [
           "cache-control",
           "x-requested-with",
