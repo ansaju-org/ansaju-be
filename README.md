@@ -78,7 +78,7 @@ This domain manages recommendation logic such as stored data history and call ex
 
 ## Documentation API
 
-See the documentation at [https://github.com/ansaju-org/ansaju-model-api](https://github.com/ansaju-org/ansaju-model-api)
+See the documentation at [https://ansaju-org.github.io/ansaju-be/](https://ansaju-org.github.io/ansaju-be/)
 
 ## Running App locally
 ```bash
