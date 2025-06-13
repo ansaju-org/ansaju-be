@@ -14,6 +14,9 @@ This is the backend system for the [Ansaju](https://ansaju.netlify.app/)
 - HapiJS (http web framework)
 - JWT (auth token)
 - Docker (for deployment)
+- Postgres (database)
+- Prisma (ORM)
+- Jest (unit testing)
 
 ## Architecture 
 ![](docs/arsitektur%20backend%20ansaju.png)
