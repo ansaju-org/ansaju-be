@@ -1,6 +1,6 @@
 import { inject, injectable } from "tsyringe";
 import { Validation } from "../validation/validation";
-import { MlModelGateway } from "../gateway/ml-model-gateway";
+import { MlModelProvider } from "../provider/ml-model-provider";
 import {
   HisotryRecommendationRequest,
   RecommendationRequest,
@@ -17,7 +17,7 @@ import { RecommendationEntity } from "../entity/recommendation-entity";
 export class RecommendationService {
   constructor(
     private validation: Validation,
-    @inject("MlModelGateway") private mlModelGateway: MlModelGateway,
+    @inject("MlModelProvider") private mlModelProvider: MlModelProvider,
     @inject("RecommendationRepository")
     private recommendationRepository: RecommendationRepository
   ) {
@@ -30,7 +30,7 @@ export class RecommendationService {
   ): Promise<RecommendationResponse> {
     const request = this.validation.validate(recommendationRequestSchema, req);
 
-    const response = await this.mlModelGateway.predict({
+    const response = await this.mlModelProvider.predict({
       answer: request.answer,
     });
 

@@ -3,7 +3,7 @@ import {
   RecommendationResponse,
 } from "../dto/recommendation-dto";
 
-export interface MlModelGateway {
+export interface MlModelProvider {
   predict(
     data: Pick<RecommendationRequest, "answer">
   ): Promise<RecommendationResponse>;
